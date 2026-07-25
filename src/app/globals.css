@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  /* Backgrounds */
+  --background: #0B0E14;
+  --background-secondary: #141822;
+
+  /* Accents */
+  --accent-cyan: #00E5FF;
+  --accent-violet: #7C4DFF;
+  --accent-success: #3DDC97;
+
+  /* Text */
+  --text-primary: #F2F5F7;
+  --text-muted: #8B93A1;
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Fonts (wired up via next/font in layout.tsx) */
+  --font-heading: var(--font-sora);
+  --font-body: var(--font-inter);
+  --font-mono-accent: var(--font-jetbrains-mono);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-success: var(--accent-success);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --font-mono-accent: var(--font-mono-accent);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body), sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+/* Themed scrollbar (WebKit/Blink browsers) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  border: 2px solid var(--background);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* Firefox */
+html {
+  scrollbar-color: var(--background-secondary) var(--background);
+}
+
+@keyframes scan {
+  0%, 100% { transform: translateY(-20%); }
+  50% { transform: translateY(400%); }
+}
+
+@keyframes wave-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+
+@keyframes rotate-glow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.cta-glow-spin {
+  animation: rotate-glow 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-glow-spin {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[scan_4s_ease-in-out_infinite\],
+  .animate-\[wave-drift_6s_ease-in-out_infinite\],
+  .animate-\[wave-drift_8s_ease-in-out_infinite\] {
+    animation: none;
+  }
+}
