@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kean-david-portfolio.vercel.app"), // TODO: replace with your real domain once deployed
+  metadataBase: new URL("https://portfolio-six-sand-34.vercel.app"), // TODO: replace with your real domain once deployed
   title: "Kean Louise David | Junior Data Analyst & Data Scientist | Remote VA & Data Entry",
   description:
     "Computer Science graduate offering remote Data Analysis, Data Science, Virtual Assistance, and Data Entry services. Skilled in Python, SQL, Tableau, TensorFlow, and Google Workspace. Available immediately.",
