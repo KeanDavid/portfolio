@@ -3,22 +3,53 @@
 import { useState } from "react";
 
 const YOUR_EMAIL = "keanlouisedavid@gmail.com";
+const WEB3FORMS_ACCESS_KEY = "9f43ed4e-d913-4377-87c4-09dc7be106f9";
+
+type Status = "idle" | "sending" | "success" | "error";
 
 export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Data Analyst");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(
-      `Portfolio Inquiry: ${role} — from ${name}`
-    );
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nRole hiring for: ${role}\n\nMessage:\n${message}`
-    );
-    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+    setStatus("sending");
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Portfolio Inquiry: ${role} — from ${name}`,
+          from_name: name,
+          name,
+          email,
+          role,
+          message,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+        setName("");
+        setEmail("");
+        setMessage("");
+        setRole("Data Analyst");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -153,10 +184,26 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="px-6 py-3 rounded-lg bg-accent-cyan text-background font-semibold hover:opacity-90 transition"
+              disabled={status === "sending"}
+              className="px-6 py-3 rounded-lg bg-accent-cyan text-background font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
-              Send Message
+              {status === "sending" ? "Sending..." : "Send Message"}
             </button>
+
+            {status === "success" && (
+              <p className="text-accent-success text-sm">
+                Message sent. I will get back to you soon.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-sm text-red-400">
+                Something went wrong. Please email me directly at{" "}
+                <a href={`mailto:${YOUR_EMAIL}`} className="underline">
+                  {YOUR_EMAIL}
+                </a>
+                .
+              </p>
+            )}
           </form>
         </div>
       </div>
